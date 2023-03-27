@@ -1,5 +1,8 @@
 from pages.sitemap_page import Sitemap
 from pages.sitemap_page import SiteMapPageUrl
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 def test_when_go_to_sitemap_page_then_should_be_repsonse_200_and_page_is_loaded(driver):
@@ -29,7 +32,7 @@ def test_when_go_to_site_map_page_and_trying_to_get_all_links_then_should_return
 def test_when_we_go_to_page_then_logo_should_be_present(driver):
     baaqmd_sitemap = Sitemap(driver=driver)
     baaqmd_sitemap.get(SiteMapPageUrl.SITE_MAP)
-    assert baaqmd_sitemap.get_logo()
+    assert baaqmd_sitemap.get_logo(baaqmd_sitemap.get_current_url())
 
 
 def test_when_we_follow_links_from_sitemap_page_then_should_be_all_links_return_status_200_and_logo_is_present(driver):
@@ -45,7 +48,7 @@ def test_when_we_follow_links_from_sitemap_page_then_should_be_all_links_return_
 
         # Best if we put all this in log file or somehow handle the process.
         # Or in DB or somewhere. Printing is bad.
-        print(f"Testing: {link_text} : {link_url}")
+        logger.info(f"Testing: {link_text} : {link_url}")
 
         # Here test falls if all links we excepted must be status 200 and logo with current selector is present
         # It happen because one page redirected us and we got 301 status code and logo selector is different
@@ -53,4 +56,4 @@ def test_when_we_follow_links_from_sitemap_page_then_should_be_all_links_return_
         # Ideally we should make ticket for frontend to fix this issue.
         assert baaqmd_sitemap.get_status_code(baaqmd_sitemap.get_current_url()) == 200 or 301
 
-        assert baaqmd_sitemap.get_logo() is not None
+        assert baaqmd_sitemap.get_logo(baaqmd_sitemap.get_current_url()) is not None

@@ -1,9 +1,12 @@
 import json
+import logging
 
 from selenium.common import NoSuchElementException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+
+logger = logging.getLogger(__name__)
 
 
 class BasePage:
@@ -29,18 +32,16 @@ class BasePage:
     def get_current_url(self):
         return self.driver.current_url
 
-    # VERY BAD AND UGLY THING. We can move out this checks and use list of elements for selection. Don't do this
-    # like me. Never.
-    def get_logo(self):
-        try:
-            assert self.driver.find_element(By.CSS_SELECTOR, ".top-logo")
-        except NoSuchElementException:
-            try:
-                assert self.driver.find_element(By.CSS_SELECTOR, ".login-logo")
-            except NoSuchElementException:
-                assert self.driver.find_element(By.CSS_SELECTOR, ".logo-one")
+    def get_logo(self, url):
 
-        return True
+        logs_css = [".login-logo", ".logo-one", ".top-logo"]
+
+        logos = max([self.driver.find_elements(By.CSS_SELECTOR, log) for log in logs_css if len(log)])
+        if logos:
+            return True
+        else:
+            logger.error(f"No such logo find element on the page: {url}")
+            raise NoSuchElementException(f"No such logo element find on the page: {url}")
 
     # here we can use requests library for sending request to url and retriving status code but we love complex ways.
     def get_status_code(self, url):
