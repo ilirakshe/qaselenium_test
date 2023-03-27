@@ -15,3 +15,4 @@ This issues were handled but anyway it is not good practice.
 Keep in mind what it is simplify test version. In good testing practice we will do this
 on other way.
 
+The tests run with pytest. If need please read the documentation how to run tests with this framework.

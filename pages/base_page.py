@@ -8,6 +8,7 @@ from selenium.webdriver.support import expected_conditions as EC
 
 class BasePage:
 
+    # In a most cases best practice is to use base url in config file.
     def __init__(self, driver):
         self.driver = driver
         self.base_url = "https://www.baaqmd.gov"

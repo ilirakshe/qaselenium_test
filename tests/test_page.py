@@ -44,7 +44,8 @@ def test_when_we_follow_links_from_sitemap_page_then_should_be_all_links_return_
         driver.get(link_url)
 
         # Best if we put all this in log file or somehow handle the process.
-        print(f"Testing: {link_url}")
+        # Or in DB or somewhere. Printing is bad.
+        print(f"Testing: {link_text} : {link_url}")
 
         # Here test falls if all links we excepted must be status 200 and logo with current selector is present
         # It happen because one page redirected us and we got 301 status code and logo selector is different
